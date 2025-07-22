@@ -1,8 +1,9 @@
-import ContactButtonsComponent from "../components/ContactButtons";
-export type { ContactButtonsProps } from "../types/ContactButtons";
+import CallComponent from "../components/Call/Call";
+export type { CallProps } from "../types/Call";
+export { useCallVapi } from "../hooks/useCallVapi";
 
 // Named export
-export { ContactButtonsComponent as ContactButtons };
+export { CallComponent as Call };
 
 // Default export
-export default ContactButtonsComponent;
+export default CallComponent;

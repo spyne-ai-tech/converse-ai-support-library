@@ -6,7 +6,7 @@ export default function ContactButtons({
   onCallClick,
 }: ContactButtonsProps) {
   return (
-    <div className="fixed right-4 top-1/2 transform -translate-y-1/2 flex flex-col gap-2">
+    <div className="">
       <button
         onClick={onEmailClick}
         className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg"
