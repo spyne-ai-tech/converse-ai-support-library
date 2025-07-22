@@ -30,7 +30,6 @@ interface UseCallVapiReturn {
 export const useCallVapi = ({
   apiKey,
   assistantId,
-  config = {},
 }: UseCallVapiProps): UseCallVapiReturn => {
   const [vapi, setVapi] = useState<Vapi | null>(null);
   const [isConnected, setIsConnected] = useState(false);

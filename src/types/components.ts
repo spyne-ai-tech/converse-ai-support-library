@@ -1,4 +1,4 @@
-import { MessageRole } from './enums';
+import { MessageRole } from "./enums";
 
 export interface Message {
   id: string;
@@ -25,4 +25,4 @@ export interface ChatInputProps {
   onKeyPress: (e: React.KeyboardEvent) => void;
   disabled?: boolean;
   placeholder?: string;
-} 
+}

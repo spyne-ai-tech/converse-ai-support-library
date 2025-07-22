@@ -1,51 +1,116 @@
-# Contact Buttons React
+# Converse AI Support Library
 
-A simple React component library for floating contact buttons (email, chat, call).
+A React component library that provides Voice Call and Text Chat functionality using Vapi AI.
 
-## Installation
+## 🚀 Features
+
+- **Voice Call Component**: Full-featured voice calling with Vapi AI
+- **Text Chat Component**: Interactive chatbot interface
+- **TypeScript Support**: Full type safety and IntelliSense
+- **Container Responsive**: Adapts to parent container size
+- **Customizable Styling**: Support for custom styles and CSS classes
+
+## 📦 Installation
 
 ```bash
-npm install contact-buttons-react
+npm install converse-ai-support-library
 ```
 
-## Usage
+## 🎨 Import Styles
 
-```tsx
-import { ContactButtons } from "contact-buttons-react";
+**Important**: Import the CSS file in your main application file to enable styling:
+
+```jsx
+// In your main App.js or index.js file
+import "converse-ai-support-library/dist/index.css";
+```
+
+## 🔧 Usage
+
+### Call Component
+
+```jsx
+import React from "react";
+import { Call } from "converse-ai-support-library";
+import "converse-ai-support-library/dist/index.css"; // Don't forget this!
 
 function App() {
   return (
-    <div>
-      <h1>Your Website</h1>
-      <ContactButtons
-        onEmailClick={() => window.open("mailto:contact@example.com")}
-        onChatClick={() => console.log("Opening chat...")}
-        onCallClick={() => window.open("tel:+1234567890")}
+    <div style={{ height: "600px", width: "800px" }}>
+      <Call
+        apiKey="your-vapi-api-key"
+        assistantId="your-vapi-assistant-id"
+        personName="John Doe"
+        personRole="Sales Agent"
+        personImage="https://example.com/agent-photo.jpg"
       />
     </div>
   );
 }
+
+export default App;
 ```
 
-## Props
+#### Call Component Props
 
-| Prop           | Type         | Description                                    |
-| -------------- | ------------ | ---------------------------------------------- |
-| `onEmailClick` | `() => void` | Callback function when email button is clicked |
-| `onChatClick`  | `() => void` | Callback function when chat button is clicked  |
-| `onCallClick`  | `() => void` | Callback function when call button is clicked  |
+| Prop                 | Type                  | Required | Default        | Description                   |
+| -------------------- | --------------------- | -------- | -------------- | ----------------------------- |
+| `apiKey`             | `string`              | ✅       | -              | Your Vapi AI API key          |
+| `assistantId`        | `string`              | ✅       | -              | Your Vapi AI assistant ID     |
+| `personName`         | `string`              | ❌       | "James Doe"    | Name to display               |
+| `personRole`         | `string`              | ❌       | "SALES PERSON" | Role/title to display         |
+| `personImage`        | `string`              | ❌       | Default avatar | Image URL for the person      |
+| `config`             | `object`              | ❌       | `{}`           | Additional Vapi configuration |
+| `className`          | `string`              | ❌       | `""`           | CSS class for inner content   |
+| `style`              | `React.CSSProperties` | ❌       | `{}`           | Inline styles for content     |
+| `containerClassName` | `string`              | ❌       | `""`           | CSS class for container       |
+| `containerStyle`     | `React.CSSProperties` | ❌       | `{}`           | Inline styles for container   |
 
-## Styling
+### Chatbot Component
 
-This component uses Tailwind CSS classes. Make sure your project has Tailwind CSS configured, or the buttons will not be styled properly.
+```jsx
+import React from "react";
+import { Chatbot } from "converse-ai-support-library";
+import "converse-ai-support-library/dist/index.css"; // Don't forget this!
 
-## Development
+function App() {
+  return (
+    <div style={{ height: "500px", width: "400px" }}>
+      <Chatbot />
+    </div>
+  );
+}
 
-1. Clone the repository
-2. Install dependencies: `npm install`
-3. Start development server: `npm run dev`
-4. Build library: `npm run build:lib`
+export default App;
+```
 
-## License
+### Custom Styling Examples
+
+```jsx
+// Custom sizing and styling
+<Call
+  apiKey="your-api-key"
+  assistantId="your-assistant-id"
+  containerStyle={{
+    height: "100vh",
+    background: "linear-gradient(to bottom, #667eea 0%, #764ba2 100%)",
+  }}
+  className="custom-call-content"
+  style={{ borderRadius: "20px", border: "2px solid white" }}
+/>
+```
+
+## 📋 Requirements
+
+- React 18+
+- Vapi AI account and API keys
+
+## 🔑 Getting Vapi AI Credentials
+
+1. Sign up at [Vapi AI](https://vapi.ai)
+2. Create an assistant
+3. Get your API key and assistant ID from the dashboard
+
+## 📄 License
 
 MIT

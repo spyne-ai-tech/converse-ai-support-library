@@ -1,24 +1,6 @@
 import React from "react";
-import agent1 from "../../assets/agent_1.png";
 import callBg from "../../assets/call_bg.png";
-import speaker from "../../assets/speaker.svg";
-import mute from "../../assets/mute.svg";
-
-interface OngoingCallProps {
-  personName: string;
-  personRole: string;
-  personImage: string;
-  isConnected: boolean;
-  isConnecting: boolean;
-  isSpeaking: boolean;
-  isMuted: boolean;
-  isSpeakerOn: boolean;
-  callDuration: number;
-  onEndCall: () => void;
-  onToggleMute: () => void;
-  onToggleSpeaker: () => void;
-  formatTime: (duration: number) => string;
-}
+import type { OngoingCallProps } from "../../types/Call";
 
 const OngoingCall: React.FC<OngoingCallProps> = ({
   personName,
@@ -34,6 +16,12 @@ const OngoingCall: React.FC<OngoingCallProps> = ({
   onToggleMute,
   onToggleSpeaker,
   formatTime,
+  className = "",
+  style = {},
+  containerClassName = "",
+  containerStyle = {},
+  speakerIcon,
+  muteIcon,
 }) => {
   // Audio visualization bars component
   const AudioVisualization = () => {
@@ -53,9 +41,15 @@ const OngoingCall: React.FC<OngoingCallProps> = ({
 
   return (
     <>
-      <div className="bg-[#F3F3F3] w-[100vw] h-[100vh] overflow-hidden flex flex-col items-center justify-between p-3">
+      <div
+        className={`bg-[#F3F3F3] w-full h-full overflow-hidden flex flex-col items-center justify-between p-3 ${containerClassName}`}
+        style={{ ...containerStyle }}
+      >
         {/* Background image */}
-        <div className="relative w-[98%] flex-1 rounded-2xl overflow-hidden">
+        <div
+          className={`relative w-[98%] flex-1 rounded-2xl overflow-hidden ${className}`}
+          style={{ ...style }}
+        >
           <div className="absolute inset-0">
             <img
               src={callBg}
@@ -78,7 +72,7 @@ const OngoingCall: React.FC<OngoingCallProps> = ({
             {/* Left side - Person image */}
             <div className="relative h-full w-[50%]">
               <img
-                src={agent1}
+                src={personImage}
                 alt={personName}
                 className="h-full object-contain absolute bottom-0 left-10"
               />
@@ -124,24 +118,10 @@ const OngoingCall: React.FC<OngoingCallProps> = ({
         {/* Bottom controls */}
         <div className="p-8 flex items-center justify-center gap-6 z-10 h-[20%]">
           {/* Speaker button */}
-          <button
-            onClick={onToggleSpeaker}
-            className={`w-16 h-16 rounded-full flex items-center justify-center border-[1px] border-black/10 transition-all duration-300 ${
-              isSpeakerOn ? "bg-white text-black" : "bg-white/70 text-black"
-            }`}
-          >
-            <img src={speaker} alt="speaker" className="w-6 h-6" />
-          </button>
+          {speakerIcon}
 
-          {/* Microphone button */}
-          <button
-            onClick={onToggleMute}
-            className={`w-16 h-16 rounded-full flex items-center justify-center border-[1px] border-black/10 transition-all duration-300 ${
-              isMuted ? "bg-red-500 text-white" : "bg-white text-black"
-            }`}
-          >
-            <img src={mute} alt="mute" className="w-6 h-6" />
-          </button>
+          {/* Mute button */}
+          {muteIcon}
 
           {/* End call button */}
           <button

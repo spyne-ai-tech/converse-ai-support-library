@@ -1,33 +1,29 @@
 import React from "react";
 import type { StartCallProps } from "../../types/Call";
-import agent1 from "../../assets/agent_1.png";
 import callBg from "../../assets/call_bg.png";
-import speaker from "../../assets/speaker.svg";
-import mute from "../../assets/mute.svg";
 
 const StartCall: React.FC<StartCallProps> = ({
   personName,
   personRole,
   personImage,
   onStartCall,
-  muteIcon = (
-    <button className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-white border-[1px] border-black/10">
-      <img src={mute} alt="mute" className="w-6 h-6" />
-    </button>
-  ),
-  speakerIcon = (
-    <button className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-white border-[1px] border-black/10">
-      <img src={speaker} alt="speaker" className="w-6 h-6" />
-    </button>
-  ),
   className = "",
+  style = {},
+  containerClassName = "",
+  containerStyle = {},
+  muteIcon,
+  speakerIcon,
 }) => {
   return (
     <div
-      className={`bg-[#F3F3F3] w-[100vw] h-[100vh] overflow-hidden flex flex-col items-center justify-between p-3 ${className}`}
+      className={`bg-[#F3F3F3] w-full h-full overflow-hidden flex flex-col items-center justify-between p-3 ${containerClassName}`}
+      style={{ ...containerStyle }}
     >
       {/* Background image */}
-      <div className="relative w-[98%] flex-1 rounded-2xl overflow-hidden">
+      <div
+        className={`relative w-[98%] flex-1 rounded-2xl overflow-hidden ${className}`}
+        style={{ ...style }}
+      >
         <div className=""> </div>
         <div className="absolute inset-0">
           <img
@@ -43,7 +39,7 @@ const StartCall: React.FC<StartCallProps> = ({
           {/* Left side - Person image */}
           <div className="relative h-full w-[50%]">
             <img
-              src={agent1}
+              src={personImage}
               alt={personName}
               className="h-full object-contain absolute bottom-0 left-10"
             />
@@ -79,7 +75,7 @@ const StartCall: React.FC<StartCallProps> = ({
         {/* Call Now button */}
         <button
           onClick={onStartCall}
-          className="bg-[#4600F2] hover:bg-[#3d00d1] text-white font-semibold py-4 px-12 rounded-full transition-colors duration-200 text-lg"
+          className="bg-[#4600F2] hover:bg-[#3d00d1] whitespace-nowrap text-white font-semibold py-4 px-12 rounded-full transition-colors duration-200 text-lg"
         >
           Call Now
         </button>

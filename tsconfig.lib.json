@@ -6,6 +6,12 @@
     "emitDeclarationOnly": true,
     "outDir": "./dist"
   },
-  "include": ["src/lib", "src/components", "src/types"],
+  "include": [
+    "src/lib",
+    "src/components",
+    "src/types",
+    "src/hooks",
+    "src/vite-env.d.ts"
+  ],
   "exclude": ["src/App.tsx", "src/main.tsx"]
 }

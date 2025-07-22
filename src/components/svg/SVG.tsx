@@ -1,11 +1,13 @@
 /**@format */
 
-import Avatar from "./Avatar.tsx";
-import Chatbot from "./Chatbot.tsx";
-import Send from "./Send.tsx";
-import type { SVGComponentProps } from '../../types/components';
+import React from "react";
+import type { SVGComponentProps } from "../../types/components";
+import Avatar from "./Avatar";
+import Chatbot from "./Chatbot";
+import Send from "./Send";
 
-interface SVGProps extends Pick<SVGComponentProps, 'className' | 'height' | 'width'> {
+interface SVGProps
+  extends Pick<SVGComponentProps, "className" | "height" | "width"> {
   iconName: keyof typeof Icons;
 }
 
@@ -17,14 +19,8 @@ const Icons = {
 
 export default function SVG({ iconName, className, height, width }: SVGProps) {
   const Icon = Icons[iconName];
-  
+
   return Icon ? (
-    <Icon
-      className={className}
-      height={height}
-      width={width}
-    />
+    <Icon className={className} height={height} width={width} />
   ) : null;
 }
-
-

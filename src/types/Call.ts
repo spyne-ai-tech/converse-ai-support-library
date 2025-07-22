@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface CallProps {
   apiKey: string;
   assistantId: string;
@@ -6,6 +8,11 @@ export interface CallProps {
   personRole?: string;
   personImage?: string;
   className?: string;
+  style?: React.CSSProperties;
+  containerClassName?: string;
+  containerStyle?: React.CSSProperties;
+  muteIcon?: React.ReactNode;
+  speakerIcon?: React.ReactNode;
 }
 
 export interface StartCallProps {
@@ -14,6 +21,31 @@ export interface StartCallProps {
   personImage: string;
   onStartCall: () => void;
   className?: string;
+  style?: React.CSSProperties;
+  containerClassName?: string;
+  containerStyle?: React.CSSProperties;
   muteIcon?: React.ReactNode;
   speakerIcon?: React.ReactNode;
+}
+
+export interface OngoingCallProps {
+  personName: string;
+  personRole: string;
+  personImage: string;
+  isConnected: boolean;
+  isConnecting: boolean;
+  isSpeaking: boolean;
+  isMuted: boolean;
+  isSpeakerOn: boolean;
+  callDuration: number;
+  onEndCall: () => void;
+  onToggleMute: () => void;
+  onToggleSpeaker: () => void;
+  formatTime: (duration: number) => string;
+  className?: string;
+  style?: React.CSSProperties;
+  containerClassName?: string;
+  containerStyle?: React.CSSProperties;
+  speakerIcon?: React.ReactNode;
+  muteIcon?: React.ReactNode;
 }
