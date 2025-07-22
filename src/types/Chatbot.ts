@@ -7,12 +7,6 @@ export interface Message {
   timestamp: string;
 }
 
-export interface SVGComponentProps {
-  className?: string;
-  height?: number | string;
-  width?: number | string;
-}
-
 export interface ChatbotProps {
   isOpen?: boolean;
   onToggle?: (isOpen: boolean) => void;
