@@ -1,5 +1,5 @@
 import React from 'react';
-import type { SVGComponentProps } from '../../types/components';
+import type { SVGComponentProps } from '../../types/SVG';
 
 const Chatbot: React.FC<SVGComponentProps> = ({ 
   className = '', 
