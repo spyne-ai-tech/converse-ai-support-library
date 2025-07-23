@@ -3,6 +3,7 @@ import React from "react";
 export interface CallProps {
   apiKey: string;
   assistantId: string;
+  showClose?: boolean;
   config?: Record<string, unknown>;
   personName?: string;
   personRole?: string;
@@ -21,12 +22,14 @@ export interface CallProps {
   speakerButtonClassName?: string;
   personRoleTextClassName?: string;
   personNameTextClassName?: string;
+  onClose?: () => void; 
 }
 
 export interface CallInterfaceProps {
   personName: string;
   personRole: string;
   personImage: string;
+  showClose?: boolean;
   className?: string;
   style?: React.CSSProperties;
   containerClassName?: string;
@@ -52,6 +55,7 @@ export interface CallInterfaceProps {
   endCallButtonClassName?: string;
   muteButtonClassName?: string;
   speakerButtonClassName?: string;
+  onClose?: () => void; 
 }
 
 export interface StartCallProps {

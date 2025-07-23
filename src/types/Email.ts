@@ -1,7 +1,8 @@
 export interface EmailProps {
   isOpen?: boolean;
-  onToggle?: (isOpen: boolean) => void;
   recipientEmail?: string;
+  showClose?: boolean;
+  onClose?: () => void;
 }
 
 export interface EmailFormData {

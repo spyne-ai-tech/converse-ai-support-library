@@ -6,7 +6,7 @@ import { VapiChatService } from "../lib/services";
 import { CHAT_CONFIG, QUICK_ACTIONS } from "../lib/config";
 import SVG from "./svg/SVG";
 
-const Chatbot: React.FC<ChatbotProps> = () => {
+const Chatbot: React.FC<ChatbotProps> = ({ showClose = false, onClose }) => {
     // const [isWidgetOpen, setIsWidgetOpen] = useState(isOpen);
     const [chatStatus, setChatStatus] = useState<ChatStatus>(ChatStatus.IDLE);
     const [currentDate, setCurrentDate] = useState("");
@@ -168,15 +168,12 @@ const Chatbot: React.FC<ChatbotProps> = () => {
                             <SVG iconName="chatbot" />
                             <h3 className="font-semibold text-sm">Chatting with Jarvis</h3>
                         </div>
-                        <button
-                            onClick={() => {
-                                // setIsWidgetOpen(false);
-                                // onToggle?.(false);
-                            }}
-                            className="text-white hover:text-blue-200 transition-colors"
+                        {showClose && <button
+                            onClick={onClose}
+                            className="text-white hover:bg-white/10 rounded-full transition-colors duration-200 p-1"
                         >
                             <SVG iconName="close" />
-                        </button>
+                        </button>}
                     </div>
 
                     {/* Sub Header with Agent Info */}

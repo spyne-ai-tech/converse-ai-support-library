@@ -13,6 +13,7 @@ import "../../index.css";
 const Call: React.FC<CallProps> = ({
   apiKey,
   assistantId,
+  showClose = false,
   config = {},
   personName = "James Doe",
   personRole = "SALES PERSON",
@@ -28,6 +29,7 @@ const Call: React.FC<CallProps> = ({
   speakerButtonClassName = "",
   personRoleTextClassName = "",
   personNameTextClassName = "",
+  onClose,
 }) => {
   const {
     isConnected,
@@ -75,6 +77,7 @@ const Call: React.FC<CallProps> = ({
       personName={personName}
       personRole={personRole}
       personImage={personImage}
+      showClose={showClose}
       className={className}
       style={style}
       containerClassName={containerClassName}
@@ -89,6 +92,7 @@ const Call: React.FC<CallProps> = ({
       callDuration={callDuration}
       onStartCall={startCall}
       onEndCall={endCall}
+      onClose={onClose}
       onToggleMute={toggleMute}
       onToggleSpeaker={toggleSpeaker}
       formatTime={formatTime}

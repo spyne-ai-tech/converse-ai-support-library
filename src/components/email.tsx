@@ -4,7 +4,7 @@ import type { EmailProps, EmailFormData } from '../types/Email';
 import { EmailService } from '../lib/email-service';
 import { EMAIL_CONFIG } from '../lib/email-config';
 
-const Email: React.FC<EmailProps> = ({ isOpen = true, onToggle, recipientEmail = EMAIL_CONFIG.DEFAULT_RECIPIENT }) => {
+const Email: React.FC<EmailProps> = ({ isOpen = true, recipientEmail = EMAIL_CONFIG.DEFAULT_RECIPIENT, showClose = false, onClose }) => {
     const [formData, setFormData] = useState<EmailFormData>({
         user_email: '',
         message: EMAIL_CONFIG.DEFAULT_MESSAGE
@@ -57,12 +57,12 @@ const Email: React.FC<EmailProps> = ({ isOpen = true, onToggle, recipientEmail =
                             <SVG iconName="email" />
                             <h3 className="font-semibold text-sm">Send an email (To: {recipientEmail})</h3>
                         </div>
-                        <button
-                            onClick={() => onToggle?.(false)}
-                            className="text-white hover:text-blue-200 transition-colors"
+                        {showClose && <button
+                            onClick={onClose}
+                            className="text-white hover:bg-white/10 rounded-full transition-colors duration-200 p-1"
                         >
                             <SVG iconName="close" />
-                        </button>
+                        </button>}
                     </div>
 
                     {/* Content Area */}
