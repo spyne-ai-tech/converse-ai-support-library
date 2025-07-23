@@ -22,6 +22,8 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
   onEndCall,
   onToggleMute,
   onToggleSpeaker,
+  personRoleTextClassName = "",
+  personNameTextClassName = "",
   formatTime = (duration: number) =>
     `${Math.floor(duration / 60)}:${(duration % 60)
       .toString()
@@ -63,7 +65,13 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
               alt="Background"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-black/10" />
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 100%)",
+              }}
+            />
           </div>
 
           {/* Close button - only show during call */}
@@ -90,28 +98,35 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
             {/* Right side - Content */}
             <div className="text-center text-white flex-1 my-auto">
               {/* Person role */}
-              <div className="text-sm font-medium tracking-widest text-white/90 mb-2">
+              <div
+                className={`text-sm font-medium tracking-widest text-white/90 mb-2 ${personRoleTextClassName}`}
+              >
                 {personRole}
               </div>
 
               {/* Person name */}
-              <div className="text-5xl font-semibold text-white mb-6">
+              <div
+                className={`text-5xl font-semibold text-white mb-6 ${personNameTextClassName}`}
+              >
                 {personName}
               </div>
 
               {/* Status badge with glassy effect */}
-              <div className="inline-flex items-center bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-4 py-2 text-sm font-medium text-white mb-6">
+              <div className="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-medium text-white mb-6">
                 {isInCall ? (
                   <>
                     {isConnecting && !isConnected ? (
                       <>
                         <div className="w-2 h-2 bg-yellow-500 rounded-full mr-2 animate-pulse" />
-                        Connecting your call please wait
+                        Please wait while we connect you ...
                       </>
                     ) : (
                       <>
                         <div className="w-2 h-2 bg-green-500 rounded-full mr-2" />
-                        Connected {formatTime(callDuration)}
+                        Connected{" "}
+                        <span className="min-w-[3rem] inline-block">
+                          {formatTime(callDuration)}
+                        </span>
                       </>
                     )}
                   </>
@@ -120,54 +135,35 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
                 )}
               </div>
 
-              {/* Audio visualization - only show when connected and speaking */}
-              {isConnected && (
-                <div className="mb-8">
-                  <AudioVisualization />
-                </div>
-              )}
+              {/* Audio visualization - always reserve space to prevent layout shift */}
+              <div className="mb-8 h-10 flex items-center justify-center">
+                {isConnected && <AudioVisualization />}
+              </div>
             </div>
           </div>
         </div>
 
         {/* Bottom controls */}
         <div className="p-8 flex items-center justify-center gap-6 z-10 h-[20%]">
-          {/* Speaker icon */}
           {speakerIcon}
-
-          {/* Mute icon */}
           {muteIcon}
-
-          {/* Main action button */}
           {isInCall ? (
             <button
               onClick={onEndCall}
-              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-4 px-12 rounded-full transition-colors duration-200 text-lg"
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-20 rounded-full transition-colors duration-200 text-md whitespace-nowrap"
             >
               End Call
             </button>
           ) : (
             <button
               onClick={onStartCall}
-              className="bg-[#4600F2] hover:bg-[#3d00d1] whitespace-nowrap text-white font-semibold py-4 px-12 rounded-full transition-colors duration-200 text-lg"
+              className="bg-[#4600F2] hover:bg-[#3d00d1] whitespace-nowrap text-white font-semibold py-2 px-20 rounded-full transition-colors duration-200 text-md"
             >
               Call Now
             </button>
           )}
         </div>
       </div>
-
-      {/* Audio wave animation styles */}
-      <style>{`
-        @keyframes audioWave {
-          0%, 100% { height: 1.25rem; }
-          50% { height: 2.5rem; }
-        }
-        
-        .animate-audioWave {
-          animation: audioWave 1s infinite;
-        }
-      `}</style>
     </>
   );
 };

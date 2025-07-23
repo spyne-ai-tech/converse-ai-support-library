@@ -25,16 +25,14 @@ export interface CallInterfaceProps {
   containerStyle?: React.CSSProperties;
   muteIcon?: React.ReactNode;
   speakerIcon?: React.ReactNode;
-
-  // Call state props (optional for start call state)
+  personRoleTextClassName?: string;
+  personNameTextClassName?: string;
   isConnected?: boolean;
   isConnecting?: boolean;
   isSpeaking?: boolean;
   isMuted?: boolean;
   isSpeakerOn?: boolean;
   callDuration?: number;
-
-  // Event handlers
   onStartCall?: () => void;
   onEndCall?: () => void;
   onToggleMute?: () => void;

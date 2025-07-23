@@ -61,6 +61,9 @@ export const useCallVapi = ({
       setIsConnecting(false);
       setIsSpeaking(false);
       setCallDuration(0);
+      // Reset audio controls to default state
+      setIsMuted(false);
+      setIsSpeakerOn(true);
     });
 
     vapiInstance.on("speech-start", () => {
@@ -125,15 +128,44 @@ export const useCallVapi = ({
 
   const toggleMute = () => {
     if (vapi) {
-      setIsMuted(!isMuted);
-      // Vapi mute functionality would go here
-      // vapi.setMuted(!isMuted);
+      const newMuteState = !isMuted;
+      setIsMuted(newMuteState);
+
+      // Vapi mute functionality - this controls microphone input
+      try {
+        vapi.setMuted(newMuteState);
+      } catch (error) {
+        console.error("Error toggling mute:", error);
+        // Revert state if Vapi call fails
+        setIsMuted(!newMuteState);
+      }
     }
   };
 
   const toggleSpeaker = () => {
-    setIsSpeakerOn(!isSpeakerOn);
-    // Speaker toggle functionality would go here
+    // Speaker toggle controls audio output volume
+    const newSpeakerState = !isSpeakerOn;
+    setIsSpeakerOn(newSpeakerState);
+
+    try {
+      // Get all audio elements and adjust volume
+      const audioElements = document.querySelectorAll("audio");
+      audioElements.forEach((audio) => {
+        audio.volume = newSpeakerState ? 1.0 : 0.0;
+      });
+
+      // For Vapi, we can also try to control the volume through the Web Audio API
+      if (vapi && (vapi as any).audioContext) {
+        const audioContext = (vapi as any).audioContext;
+        if (audioContext.destination.volume !== undefined) {
+          audioContext.destination.volume.value = newSpeakerState ? 1.0 : 0.0;
+        }
+      }
+    } catch (error) {
+      console.error("Error toggling speaker:", error);
+      // Revert state if speaker control fails
+      setIsSpeakerOn(!newSpeakerState);
+    }
   };
 
   // Utility functions

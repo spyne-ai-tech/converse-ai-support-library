@@ -1,11 +1,14 @@
 import React from "react";
-import "../../index.css";
 import { useCallVapi } from "../../hooks/useCallVapi";
 import type { CallProps } from "../../types/Call";
 import CallInterface from "./CallInterface";
 import agent1 from "../../assets/agent_1.png";
 import mute from "../../assets/mute.svg";
+import micOff from "../../assets/mic_off.svg";
 import speaker from "../../assets/speaker.svg";
+import volumeOff from "../../assets/volume_off.svg";
+
+import "../../index.css";
 
 const Call: React.FC<CallProps> = ({
   apiKey,
@@ -18,18 +21,7 @@ const Call: React.FC<CallProps> = ({
   style = {},
   containerClassName = "",
   containerStyle = {},
-  muteIcon = (
-    <button className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-white border-[1px] border-black/10">
-      <img src={mute} alt="mute" className="w-6 h-6" />
-    </button>
-  ),
-  speakerIcon = (
-    <button className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-white border-[1px] border-black/10">
-      <img src={speaker} alt="speaker" className="w-6 h-6" />
-    </button>
-  ),
 }) => {
-  // Use the custom hook for all Vapi logic
   const {
     isConnected,
     isConnecting,
@@ -44,7 +36,33 @@ const Call: React.FC<CallProps> = ({
     formatTime,
   } = useCallVapi({ apiKey, assistantId, config });
 
-  // Use the merged CallInterface component for both states
+  // Create dynamic icons based on state
+  const muteIcon = (
+    <button
+      onClick={toggleMute}
+      className="w-11 h-11 rounded-full bg-white flex items-center justify-center text-white border-[1px] border-black/10 cursor-pointer hover:bg-gray-50 transition-colors"
+    >
+      <img
+        src={isMuted ? micOff : mute}
+        alt={isMuted ? "mic off" : "mute"}
+        className="w-4 h-4"
+      />
+    </button>
+  );
+
+  const speakerIcon = (
+    <button
+      onClick={toggleSpeaker}
+      className="w-11 h-11 rounded-full bg-white flex items-center justify-center text-white border-[1px] border-black/10 cursor-pointer hover:bg-gray-50 transition-colors"
+    >
+      <img
+        src={isSpeakerOn ? speaker : volumeOff}
+        alt={isSpeakerOn ? "speaker on" : "volume off"}
+        className="w-4 h-4"
+      />
+    </button>
+  );
+
   return (
     <CallInterface
       personName={personName}
