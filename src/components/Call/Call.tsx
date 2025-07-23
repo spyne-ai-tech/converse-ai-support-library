@@ -1,22 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useCallVapi } from "../../hooks/useCallVapi";
 import type { CallProps } from "../../types/Call";
+import type { Agent, RuntimeAgentResponse } from "../../types/agent";
 import CallInterface from "./CallInterface";
-import agent1 from "../../assets/agent_1.png";
 import mute from "../../assets/mute.svg";
 import micOff from "../../assets/mic_off.svg";
 import speaker from "../../assets/speaker.svg";
 import volumeOff from "../../assets/volume_off.svg";
+import { fetchAgentData, fetchAgents } from "../../helpers/api";
 
 import "../../index.css";
 
 const Call: React.FC<CallProps> = ({
   apiKey,
+  baseUrl,
   assistantId,
+  enterpriseId,
+  teamId,
   config = {},
-  personName = "James Doe",
-  personRole = "SALES PERSON",
-  personImage = agent1,
+  personName = "",
+  personRole = "",
+  personImage = "",
   className = "",
   style = {},
   containerClassName = "",
@@ -29,6 +33,20 @@ const Call: React.FC<CallProps> = ({
   personRoleTextClassName = "",
   personNameTextClassName = "",
 }) => {
+  const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
+  const [agentData, setAgentData] = useState<RuntimeAgentResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Dynamic configuration based on fetched data
+  const finalApiKey = apiKey;
+  const finalAssistantId = selectedAgent?.id || assistantId;
+  const finalConfig = agentData?.vapiAgentConfig
+    ? (agentData.vapiAgentConfig as unknown as Record<string, unknown>)
+    : config;
+  const finalPersonName = selectedAgent?.name || personName;
+  const finalPersonRole = selectedAgent?.description || personRole;
+  const finalPersonImage = selectedAgent?.imageUrl || personImage;
+
   const {
     isConnected,
     isConnecting,
@@ -41,7 +59,46 @@ const Call: React.FC<CallProps> = ({
     toggleMute,
     toggleSpeaker,
     formatTime,
-  } = useCallVapi({ apiKey, assistantId, config });
+  } = useCallVapi({
+    apiKey: finalApiKey,
+    assistantId: finalAssistantId || "",
+    config: finalConfig,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        // Fetch agents list
+        const agentsList = await fetchAgents({
+          enterpriseId,
+          teamId: teamId || "",
+          baseUrl,
+        });
+
+        if (agentsList.length > 0) {
+          // Select first agent
+          const firstAgent = agentsList[0];
+          setSelectedAgent(firstAgent);
+
+          // Fetch runtime agent data
+          const runtimeAgentData = await fetchAgentData({
+            enterpriseId,
+            teamId: teamId || "",
+            agentId: firstAgent.id,
+            baseUrl,
+          });
+          setAgentData(runtimeAgentData);
+        }
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Create dynamic icons based on state with customizable classes
   const muteIcon = (
@@ -72,9 +129,9 @@ const Call: React.FC<CallProps> = ({
 
   return (
     <CallInterface
-      personName={personName}
-      personRole={personRole}
-      personImage={personImage}
+      personName={finalPersonName}
+      personRole={finalPersonRole}
+      personImage={finalPersonImage}
       className={className}
       style={style}
       containerClassName={containerClassName}
@@ -99,6 +156,7 @@ const Call: React.FC<CallProps> = ({
       endCallButtonClassName={endCallButtonClassName}
       muteButtonClassName={muteButtonClassName}
       speakerButtonClassName={speakerButtonClassName}
+      isLoading={loading}
     />
   );
 };

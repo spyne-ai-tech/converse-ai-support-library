@@ -29,6 +29,7 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
   endCallButtonClassName = "",
   muteButtonClassName = "",
   speakerButtonClassName = "",
+  isLoading = false,
   formatTime = (duration: number) =>
     `${Math.floor(duration / 60)}:${(duration % 60)
       .toString()
@@ -83,7 +84,10 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
           {isInCall && onEndCall && (
             <button
               onClick={onEndCall}
-              className="absolute top-5 right-5 bg-transparent border-none text-white text-2xl cursor-pointer z-[10000] w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors duration-200"
+              disabled={isLoading}
+              className={`absolute top-5 right-5 bg-transparent border-none text-white text-2xl cursor-pointer z-[10000] w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors duration-200 ${
+                isLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
               ✕
             </button>
@@ -92,7 +96,7 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
           {/* Content */}
           <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between h-full w-full">
             {/* Content section - top on mobile, right on desktop */}
-            <div className="text-center flex-1 my-auto order-1 sm:order-2 pt-8 sm:pt-0">
+            <div className="text-center text-white flex-1 my-auto order-1 sm:order-2 pt-8 sm:pt-0">
               {/* Person role */}
               <div
                 className={`text-sm font-medium tracking-widest text-white/90 mb-2 ${personRoleTextClassName}`}
@@ -108,28 +112,30 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
               </div>
 
               {/* Status badge with glassy effect */}
-              <div className="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-medium text-white mb-6">
-                {isInCall ? (
-                  <>
-                    {isConnecting && !isConnected ? (
-                      <>
-                        <div className="w-2 h-2 bg-yellow-500 rounded-full mr-2 animate-pulse" />
-                        Please wait while we connect you ...
-                      </>
-                    ) : (
-                      <>
-                        <div className="w-2 h-2 bg-green-500 rounded-full mr-2" />
-                        Connected{" "}
-                        <span className="min-w-[3rem] inline-block">
-                          {formatTime(callDuration)}
-                        </span>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  "Your 24x7 assistant"
-                )}
-              </div>
+              {!isLoading && (
+                <div className="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-medium text-white mb-6">
+                  {isInCall ? (
+                    <>
+                      {isConnecting && !isConnected ? (
+                        <>
+                          <div className="w-2 h-2 bg-yellow-500 rounded-full mr-2 animate-pulse" />
+                          Please wait while we connect you ...
+                        </>
+                      ) : (
+                        <>
+                          <div className="w-2 h-2 bg-green-500 rounded-full mr-2" />
+                          Connected{" "}
+                          <span className="min-w-[3rem] inline-block">
+                            {formatTime(callDuration)}
+                          </span>
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    "Your 24x7 assistant"
+                  )}
+                </div>
+              )}
 
               {/* Audio visualization - always reserve space to prevent layout shift */}
               <div className="mb-8 h-10 flex items-center justify-center">
@@ -159,14 +165,20 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
           {isInCall ? (
             <button
               onClick={onEndCall}
-              className={`bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-20 rounded-full transition-colors duration-200 text-md whitespace-nowrap ${endCallButtonClassName}`}
+              disabled={isLoading}
+              className={`bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-20 rounded-full transition-colors duration-200 text-md whitespace-nowrap ${endCallButtonClassName} ${
+                isLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
               End Call
             </button>
           ) : (
             <button
               onClick={onStartCall}
-              className={`bg-[#4600F2] hover:bg-[#3d00d1] whitespace-nowrap text-white font-semibold py-2 px-10 sm:px-20 rounded-full transition-colors duration-200 text-md ${callNowButtonClassName}`}
+              disabled={isLoading}
+              className={`bg-[#4600F2] hover:bg-[#3d00d1] whitespace-nowrap text-white font-semibold py-2 px-10 sm:px-20 rounded-full transition-colors duration-200 text-md ${callNowButtonClassName} ${
+                isLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
               Call Now
             </button>

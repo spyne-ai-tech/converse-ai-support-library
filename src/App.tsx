@@ -10,22 +10,44 @@ import {
 
 function App() {
   const [componentType, setComponentType] = useState<string | null>(null);
+  const [enterpriseId, setEnterpriseId] = useState<string>("");
+  const [teamId, setTeamId] = useState<string>("");
 
   useEffect(() => {
     // Get query parameters from URL
     const urlParams = new URLSearchParams(window.location.search);
     const type = urlParams.get("type");
+    const enterprise = urlParams.get("enterpriseId");
+    const team = urlParams.get("teamId");
+
     setComponentType(type);
+    setEnterpriseId(enterprise || "");
+    setTeamId(team || "");
   }, []);
+
+  // Get VAPI API key from environment variables
+  const vapiApiKey = import.meta.env.VITE_VAPI_API_KEY || "";
+  const vapiBaseUrl = import.meta.env.VITE_API_BASE_URL || "";
 
   // Render based on type parameter
   const renderComponent = () => {
+    // Check if required parameters are present for any component type
+    if (componentType && (!enterpriseId || !teamId)) {
+      return (
+        <div className="h-[100vh] w-[100vw] flex items-center justify-center">
+          <span>No data available</span>
+        </div>
+      );
+    }
+
     switch (componentType) {
       case "call":
         return (
           <Call
-            apiKey="25b57b4d-1626-4a90-a160-fd033fcc3b83"
-            assistantId="af93082d-f691-408f-add1-c204a4850f3d"
+            apiKey={vapiApiKey}
+            baseUrl={vapiBaseUrl}
+            enterpriseId={enterpriseId}
+            teamId={teamId}
           />
         );
 
@@ -42,30 +64,45 @@ function App() {
               Converse AI Support Library Demo
             </h1>
             <p className="text-gray-600 mb-8">
-              Add a query parameter to test different components:
+              Add query parameters to test different components:
             </p>
             <div className="flex flex-col gap-2 text-sm text-gray-500">
               <p>
-                <code>?type=call</code> - Shows Call component
+                <code>
+                  ?type=call&enterpriseId={enterpriseId}&teamId={teamId}
+                </code>{" "}
+                - Shows Call component
               </p>
               <p>
-                <code>?type=chat</code> - Shows Chatbot component
+                <code>
+                  ?type=chat&enterpriseId={enterpriseId}&teamId={teamId}
+                </code>{" "}
+                - Shows Chatbot component
               </p>
               <p>
-                <code>?type=email</code> - Shows Email component
+                <code>
+                  ?type=email&enterpriseId={enterpriseId}&teamId={teamId}
+                </code>{" "}
+                - Shows Email component
               </p>
             </div>
 
             {/* Demo buttons */}
             <div className="flex gap-4 mt-8">
               <CallButton
-                onClick={() => (window.location.href = "?type=call")}
+                onClick={() =>
+                  (window.location.href = `?type=call&enterpriseId=${enterpriseId}&teamId=${teamId}`)
+                }
               />
               <ChatButton
-                onClick={() => (window.location.href = "?type=chat")}
+                onClick={() =>
+                  (window.location.href = `?type=chat&enterpriseId=${enterpriseId}&teamId=${teamId}`)
+                }
               />
               <EmailButton
-                onClick={() => (window.location.href = "?type=email")}
+                onClick={() =>
+                  (window.location.href = `?type=email&enterpriseId=${enterpriseId}&teamId=${teamId}`)
+                }
               />
             </div>
           </div>

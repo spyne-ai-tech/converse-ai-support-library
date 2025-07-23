@@ -2,7 +2,10 @@ import React from "react";
 
 export interface CallProps {
   apiKey: string;
-  assistantId: string;
+  baseUrl: string;
+  assistantId?: string;
+  enterpriseId: string;
+  teamId?: string;
   config?: Record<string, unknown>;
   personName?: string;
   personRole?: string;
@@ -19,6 +22,7 @@ export interface CallProps {
   endCallButtonClassName?: string;
   muteButtonClassName?: string;
   speakerButtonClassName?: string;
+  // Text className props
   personRoleTextClassName?: string;
   personNameTextClassName?: string;
 }
@@ -52,6 +56,8 @@ export interface CallInterfaceProps {
   endCallButtonClassName?: string;
   muteButtonClassName?: string;
   speakerButtonClassName?: string;
+  // Loading state
+  isLoading?: boolean;
 }
 
 export interface StartCallProps {

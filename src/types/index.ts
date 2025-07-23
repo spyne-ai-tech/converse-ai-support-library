@@ -15,6 +15,9 @@ export type {
 // Contact Buttons interfaces
 export type { ContactButtonsProps } from "./ContactButtons";
 
+// Agent interfaces
+export type { Agent, VapiAgentConfig, RuntimeAgentResponse } from "./agent";
+
 // SVG interfaces
 export type { SVGComponentProps } from "./SVG";
 
