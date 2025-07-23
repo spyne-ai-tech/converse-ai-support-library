@@ -1,8 +1,8 @@
 import React from "react";
-import MailIcon from "../../assets/mail.svg";
-import type { EmailButtonProps } from "../../types/Button";
+import CallIcon from "../../assets/call.svg";
+import type { CallButtonProps } from "../../types/Button";
 
-const EmailButton: React.FC<EmailButtonProps> = ({
+const CallButton: React.FC<CallButtonProps> = ({
   onClick,
   className,
   style,
@@ -25,9 +25,9 @@ const EmailButton: React.FC<EmailButtonProps> = ({
         ...style,
       }}
     >
-      <img src={MailIcon} alt="Email" width="18" height="14" />
+      <img src={CallIcon} alt="Call" width="16" height="16" />
     </button>
   );
 };
 
-export default EmailButton;
+export default CallButton;

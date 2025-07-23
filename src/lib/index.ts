@@ -1,17 +1,26 @@
 import CallComponent from "../components/Call/Call";
 import ChatbotComponent from "../components/chatbot";
 import EmailComponent from "../components/email";
+import CallButtonComponent from "../components/Buttons/CallButton";
+import ChatButtonComponent from "../components/Buttons/ChatButton";
+import EmailButtonComponent from "../components/Buttons/EmailButton";
 
 // Export types
 export type { CallProps } from "../types/Call";
-
-// Export hooks
-export { useCallVapi } from "../hooks/useCallVapi";
+export type {
+  ButtonProps,
+  CallButtonProps,
+  ChatButtonProps,
+  EmailButtonProps,
+  ContactButtonsProps,
+} from "../types";
 
 // Named exports
 export { CallComponent as Call };
 export { ChatbotComponent as Chatbot };
 export { EmailComponent as Email };
 
-// Default export (Call component as primary)
-export default CallComponent;
+// Button exports
+export { CallButtonComponent as CallButton };
+export { ChatButtonComponent as ChatButton };
+export { EmailButtonComponent as EmailButton };

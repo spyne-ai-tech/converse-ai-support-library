@@ -1,8 +1,8 @@
 import React from "react";
-import MailIcon from "../../assets/mail.svg";
-import type { EmailButtonProps } from "../../types/Button";
+import ChatIcon from "../../assets/chat.svg";
+import type { ChatButtonProps } from "../../types/Button";
 
-const EmailButton: React.FC<EmailButtonProps> = ({
+const ChatButton: React.FC<ChatButtonProps> = ({
   onClick,
   className,
   style,
@@ -25,9 +25,9 @@ const EmailButton: React.FC<EmailButtonProps> = ({
         ...style,
       }}
     >
-      <img src={MailIcon} alt="Email" width="18" height="14" />
+      <img src={ChatIcon} alt="Chat" width="18" height="16" />
     </button>
   );
 };
 
-export default EmailButton;
+export default ChatButton;
