@@ -144,14 +144,12 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
             </div>
 
             {/* Person image - bottom on mobile, left on desktop */}
-            <div className="relative flex-1 sm:h-full sm:w-[50%] order-2 sm:order-1 flex justify-center sm:justify-start items-end pb-4 sm:pb-0">
-              <div className="relative w-full h-full flex items-end justify-center sm:justify-start">
-                <img
-                  src={personImage}
-                  alt={personName}
-                  className="max-h-full h-auto w-auto max-w-full object-contain sm:absolute sm:bottom-0 sm:left-10"
-                />
-              </div>
+            <div className="relative flex-1 h-[60%] sm:h-full sm:w-[50%] order-2 sm:order-1 flex justify-center sm:justify-start items-end pb-4 sm:pb-0">
+              <img
+                src={personImage}
+                alt={personName}
+                className="h-full object-contain sm:absolute sm:bottom-0 sm:left-10"
+              />
             </div>
           </div>
         </div>
