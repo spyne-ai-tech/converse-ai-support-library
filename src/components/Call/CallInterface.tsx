@@ -24,6 +24,11 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
   onToggleSpeaker,
   personRoleTextClassName = "",
   personNameTextClassName = "",
+  controlsContainerClassName = "",
+  callNowButtonClassName = "",
+  endCallButtonClassName = "",
+  muteButtonClassName = "",
+  speakerButtonClassName = "",
   formatTime = (duration: number) =>
     `${Math.floor(duration / 60)}:${(duration % 60)
       .toString()
@@ -87,7 +92,7 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
           {/* Content */}
           <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between h-full w-full">
             {/* Content section - top on mobile, right on desktop */}
-            <div className="text-center text-white flex-1 my-auto order-1 sm:order-2 pt-8 sm:pt-0">
+            <div className="text-center flex-1 my-auto order-1 sm:order-2 pt-8 sm:pt-0">
               {/* Person role */}
               <div
                 className={`text-sm font-medium tracking-widest text-white/90 mb-2 ${personRoleTextClassName}`}
@@ -134,30 +139,34 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
 
             {/* Person image - bottom on mobile, left on desktop */}
             <div className="relative flex-1 sm:h-full sm:w-[50%] order-2 sm:order-1 flex justify-center sm:justify-start items-end pb-4 sm:pb-0">
-              <img
-                src={personImage}
-                alt={personName}
-                className="h-[40vh] sm:h-full object-contain absolute bottom-0 sm:left-10"
-              />
+              <div className="relative w-full h-full flex items-end justify-center sm:justify-start">
+                <img
+                  src={personImage}
+                  alt={personName}
+                  className="max-h-full h-auto w-auto max-w-full object-contain sm:absolute sm:bottom-0 sm:left-10"
+                />
+              </div>
             </div>
           </div>
         </div>
 
         {/* Bottom controls */}
-        <div className=" p-4 sm:p-8 flex items-center justify-center gap-4 sm:gap-6 z-10 h-[15%] sm:h-[20%]">
+        <div
+          className={`p-4 sm:p-8 flex items-center justify-center gap-4 sm:gap-6 z-10 h-[15%] sm:h-[20%] ${controlsContainerClassName}`}
+        >
           {speakerIcon}
           {muteIcon}
           {isInCall ? (
             <button
               onClick={onEndCall}
-              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-20 rounded-full transition-colors duration-200 text-md whitespace-nowrap"
+              className={`bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-20 rounded-full transition-colors duration-200 text-md whitespace-nowrap ${endCallButtonClassName}`}
             >
               End Call
             </button>
           ) : (
             <button
               onClick={onStartCall}
-              className="bg-[#4600F2] hover:bg-[#3d00d1] whitespace-nowrap text-white font-semibold py-2 px-10 sm:px-20 rounded-full transition-colors duration-200 text-md"
+              className={`bg-[#4600F2] hover:bg-[#3d00d1] whitespace-nowrap text-white font-semibold py-2 px-10 sm:px-20 rounded-full transition-colors duration-200 text-md ${callNowButtonClassName}`}
             >
               Call Now
             </button>

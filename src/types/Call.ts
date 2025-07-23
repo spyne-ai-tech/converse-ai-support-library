@@ -13,6 +13,14 @@ export interface CallProps {
   containerStyle?: React.CSSProperties;
   muteIcon?: React.ReactNode;
   speakerIcon?: React.ReactNode;
+  // Control className props
+  controlsContainerClassName?: string;
+  callNowButtonClassName?: string;
+  endCallButtonClassName?: string;
+  muteButtonClassName?: string;
+  speakerButtonClassName?: string;
+  personRoleTextClassName?: string;
+  personNameTextClassName?: string;
 }
 
 export interface CallInterfaceProps {
@@ -38,6 +46,12 @@ export interface CallInterfaceProps {
   onToggleMute?: () => void;
   onToggleSpeaker?: () => void;
   formatTime?: (duration: number) => string;
+  // Control className props
+  controlsContainerClassName?: string;
+  callNowButtonClassName?: string;
+  endCallButtonClassName?: string;
+  muteButtonClassName?: string;
+  speakerButtonClassName?: string;
 }
 
 export interface StartCallProps {

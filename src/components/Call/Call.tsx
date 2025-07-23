@@ -21,6 +21,13 @@ const Call: React.FC<CallProps> = ({
   style = {},
   containerClassName = "",
   containerStyle = {},
+  controlsContainerClassName = "",
+  callNowButtonClassName = "",
+  endCallButtonClassName = "",
+  muteButtonClassName = "",
+  speakerButtonClassName = "",
+  personRoleTextClassName = "",
+  personNameTextClassName = "",
 }) => {
   const {
     isConnected,
@@ -36,11 +43,11 @@ const Call: React.FC<CallProps> = ({
     formatTime,
   } = useCallVapi({ apiKey, assistantId, config });
 
-  // Create dynamic icons based on state
+  // Create dynamic icons based on state with customizable classes
   const muteIcon = (
     <button
       onClick={toggleMute}
-      className="w-11 h-11 rounded-full bg-white flex items-center justify-center text-white border-[1px] border-black/10 cursor-pointer hover:bg-gray-50 transition-colors"
+      className={`w-11 h-11 rounded-full bg-white flex items-center justify-center text-white border-[1px] border-black/10 cursor-pointer hover:bg-gray-50 transition-colors ${muteButtonClassName}`}
     >
       <img
         src={isMuted ? micOff : mute}
@@ -53,7 +60,7 @@ const Call: React.FC<CallProps> = ({
   const speakerIcon = (
     <button
       onClick={toggleSpeaker}
-      className="w-11 h-11 rounded-full bg-white flex items-center justify-center text-white border-[1px] border-black/10 cursor-pointer hover:bg-gray-50 transition-colors"
+      className={`w-11 h-11 rounded-full bg-white flex items-center justify-center text-white border-[1px] border-black/10 cursor-pointer hover:bg-gray-50 transition-colors ${speakerButtonClassName}`}
     >
       <img
         src={isSpeakerOn ? speaker : volumeOff}
@@ -85,6 +92,13 @@ const Call: React.FC<CallProps> = ({
       onToggleMute={toggleMute}
       onToggleSpeaker={toggleSpeaker}
       formatTime={formatTime}
+      personRoleTextClassName={personRoleTextClassName}
+      personNameTextClassName={personNameTextClassName}
+      controlsContainerClassName={controlsContainerClassName}
+      callNowButtonClassName={callNowButtonClassName}
+      endCallButtonClassName={endCallButtonClassName}
+      muteButtonClassName={muteButtonClassName}
+      speakerButtonClassName={speakerButtonClassName}
     />
   );
 };
