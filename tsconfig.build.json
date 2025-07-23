@@ -1,6 +1,8 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
     "declaration": true,
     "emitDeclarationOnly": true,
     "outDir": "dist",
@@ -11,7 +13,8 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": false
+    "allowImportingTsExtensions": false,
+    "verbatimModuleSyntax": false
   },
   "include": ["src"],
   "exclude": ["**/*.test.*", "**/*.stories.*", "src/App.tsx", "src/main.tsx"]

@@ -1,11 +1,11 @@
 /**@format */
 
-import Avatar from "./AvatarIcon.tsx";
-import Chatbot from "./ChatbotIcon.tsx";
-import Send from "./SendIcon.tsx";
-import type { SVGComponentProps } from '../../types/SVG';
-import Email from "./EmailIcon.tsx";
-import Close from "./CloseIcon.tsx";
+import Avatar from "./AvatarIcon";
+import Chatbot from "./ChatbotIcon";
+import Send from "./SendIcon";
+import type { SVGComponentProps } from "../../types/SVG";
+import Email from "./EmailIcon";
+import Close from "./CloseIcon";
 
 interface SVGProps
   extends Pick<SVGComponentProps, "className" | "height" | "width"> {
