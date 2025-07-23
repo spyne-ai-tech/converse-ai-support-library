@@ -1,6 +1,7 @@
 export interface EmailProps {
   isOpen?: boolean;
-  recipientEmail?: string;
+  enterpriseId?: string;
+  teamId?: string;
   showClose?: boolean;
   onClose?: () => void;
 }

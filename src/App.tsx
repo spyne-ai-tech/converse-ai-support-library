@@ -25,10 +25,6 @@ function App() {
     setTeamId(team || "");
   }, []);
 
-  // Get VAPI API key from environment variables
-  const vapiApiKey = import.meta.env.VITE_VAPI_API_KEY || "";
-  const vapiBaseUrl = import.meta.env.VITE_API_BASE_URL || "";
-
   // Render based on type parameter
   const renderComponent = () => {
     // Check if required parameters are present for any component type
@@ -44,18 +40,16 @@ function App() {
       case "call":
         return (
           <Call
-            apiKey={vapiApiKey}
-            baseUrl={vapiBaseUrl}
             enterpriseId={enterpriseId}
-            teamId={teamId}
+            showClose={true}
           />
         );
 
       case "chat":
-        return <Chatbot showClose={true} />;
+        return <Chatbot showClose={true} enterpriseId={enterpriseId} teamId={teamId} />;
 
       case "email":
-        return <Email showClose={true} />;
+        return <Email showClose={true} enterpriseId={enterpriseId} teamId={teamId} />;
 
       default:
         return (

@@ -5,6 +5,12 @@ export const VAPI_CONFIG = {
   BASE_URL: 'https://api.vapi.ai',
 } as const;
 
+export const SPYNE_CONFIG = {
+  BASE_URL: 'https://beta-api.spyne.xyz',
+  ENTERPRISE_ID: '4a97d4272',
+  TEAM_AGENT_MAPPING_ID: '9cea0eba-c65a-4c8a-bd6c-1637385e55d1',
+} as const;
+
 export const CHAT_CONFIG = {
   AUTO_SCROLL_BEHAVIOR: 'smooth' as ScrollBehavior,
   DEFAULT_PLACEHOLDER: 'Type your chat message here!',

@@ -1,6 +1,6 @@
-import type { VapiChatRequest, VapiChatResponse, VapiError, VapiMessage } from '../types/api';
+import type { VapiChatRequest, VapiChatResponse, VapiError, VapiMessage, ConversationCreateRequest, ConversationCreateResponse } from '../types/api';
 import { VapiEndpoints } from '../types/enums';
-import { VAPI_CONFIG } from './config';
+import { VAPI_CONFIG, SPYNE_CONFIG } from './config';
 
 export class VapiChatService {
   private static readonly apiKey = VAPI_CONFIG.API_KEY;
@@ -65,5 +65,38 @@ export class VapiChatService {
       status: 500,
       code: 'UNKNOWN_ERROR',
     };
+  }
+}
+
+export class ConversationService {
+  private static readonly baseUrl = SPYNE_CONFIG.BASE_URL;
+
+  static async createConversation(enterpriseId?: string): Promise<string> {
+    const requestBody: ConversationCreateRequest = {
+      enterpriseId: enterpriseId || SPYNE_CONFIG.ENTERPRISE_ID,
+      teamAgentMappingId: SPYNE_CONFIG.TEAM_AGENT_MAPPING_ID, // Always use hardcoded value
+    };
+
+    try {
+      const response = await fetch(`${this.baseUrl}/conversation/dealer-conversation/create-from-mapping`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data: ConversationCreateResponse = await response.json();
+      console.log('Conversation created:', data);
+      
+      return data.conversationId;
+    } catch (error) {
+      console.error('Conversation creation error:', error);
+      throw new Error('Failed to create conversation');
+    }
   }
 } 

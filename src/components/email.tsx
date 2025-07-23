@@ -1,16 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SVG from './svg/SVG';
 import type { EmailProps, EmailFormData } from '../types/Email';
 import { EmailService } from '../lib/email-service';
+import { ConversationService } from '../lib/services';
 import { EMAIL_CONFIG } from '../lib/email-config';
 
-const Email: React.FC<EmailProps> = ({ isOpen = true, recipientEmail = EMAIL_CONFIG.DEFAULT_RECIPIENT, showClose = false, onClose }) => {
+const Email: React.FC<EmailProps> = ({ isOpen = true, showClose = false, onClose, enterpriseId, teamId }) => {
+    // teamId is passed but not used currently - reserved for future API integration
+    void teamId;
+    
     const [formData, setFormData] = useState<EmailFormData>({
         user_email: '',
         message: EMAIL_CONFIG.DEFAULT_MESSAGE
     });
     const [isLoading, setIsLoading] = useState(false);
     const [emailSent, setEmailSent] = useState(false);
+    const [conversationId, setConversationId] = useState<string | null>(null);
+
+    // Create conversation when component mounts
+    useEffect(() => {
+        const initializeConversation = async () => {
+            try {
+                const newConversationId = await ConversationService.createConversation(enterpriseId);
+                setConversationId(newConversationId);
+                console.log('Email component - Conversation created:', newConversationId);
+            } catch (error) {
+                console.error('Failed to create conversation:', error);
+                // You might want to show an error message to the user
+            }
+        };
+
+        initializeConversation();
+    }, [enterpriseId]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -21,13 +42,13 @@ const Email: React.FC<EmailProps> = ({ isOpen = true, recipientEmail = EMAIL_CON
     };
 
     const handleSendEmail = async () => {
-        if (!formData.user_email.trim()) {
+        if (!formData.user_email.trim() || !conversationId) {
             return;
         }
 
         setIsLoading(true);
         try {
-            await EmailService.sendEmail(formData);
+            await EmailService.sendEmail(formData, conversationId);
             setEmailSent(true);
         } catch (error) {
             console.error('Failed to send email:', error);
@@ -46,7 +67,7 @@ const Email: React.FC<EmailProps> = ({ isOpen = true, recipientEmail = EMAIL_CON
     };
 
     if (!isOpen) return null;
-    
+
     return (
         <div className="w-full h-screen">
             <div className="w-full h-full flex items-center justify-center">
@@ -55,7 +76,7 @@ const Email: React.FC<EmailProps> = ({ isOpen = true, recipientEmail = EMAIL_CON
                     <div className="bg-blue-600 text-white p-3 rounded-t-lg flex items-center justify-between">
                         <div className="flex items-center space-x-3">
                             <SVG iconName="email" />
-                            <h3 className="font-semibold text-sm">Send an email (To: {recipientEmail})</h3>
+                            <h3 className="font-semibold text-sm">Send an email</h3>
                         </div>
                         {showClose && <button
                             onClick={onClose}
@@ -129,7 +150,7 @@ const Email: React.FC<EmailProps> = ({ isOpen = true, recipientEmail = EMAIL_CON
                             <div className="p-4 bg-white border-t">
                                 <button
                                     onClick={handleSendEmail}
-                                    disabled={isLoading || !formData.user_email.trim()}
+                                    disabled={isLoading || !formData.user_email.trim() || !conversationId}
                                     className="w-fit bg-purple text-white text-sm py-2 px-12 rounded-full font-medium hover:bg-purple transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
                                 >
                                     <span>{isLoading ? 'Sending...' : 'Send Email'}</span>

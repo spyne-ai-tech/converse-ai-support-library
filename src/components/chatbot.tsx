@@ -2,17 +2,21 @@ import { useState, useEffect, useRef } from "react";
 import "../index.css";
 import type { Message, ChatbotProps } from '../types/Chatbot';
 import { MessageRole, ChatStatus } from "../types/enums";
-import { VapiChatService } from "../lib/services";
+import { VapiChatService, ConversationService } from "../lib/services";
 import { CHAT_CONFIG, QUICK_ACTIONS } from "../lib/config";
 import SVG from "./svg/SVG";
 
-const Chatbot: React.FC<ChatbotProps> = ({ showClose = false, onClose }) => {
+const Chatbot: React.FC<ChatbotProps> = ({ showClose = false, onClose, enterpriseId, teamId }) => {
+    // teamId is passed but not used currently - reserved for future API integration
+    void teamId;
+    
     // const [isWidgetOpen, setIsWidgetOpen] = useState(isOpen);
     const [chatStatus, setChatStatus] = useState<ChatStatus>(ChatStatus.IDLE);
     const [currentDate, setCurrentDate] = useState("");
     const [currentChatId, setCurrentChatId] = useState<string | undefined>(
         undefined
     );
+    const [conversationId, setConversationId] = useState<string | null>(null);
     const [messages, setMessages] = useState<Message[]>([
         {
         id: "initial_message",
@@ -26,6 +30,24 @@ const Chatbot: React.FC<ChatbotProps> = ({ showClose = false, onClose }) => {
     ]);
     const [inputValue, setInputValue] = useState("");
     const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    // Create conversation when component mounts
+    useEffect(() => {
+        const initializeConversation = async () => {
+            try {
+                const newConversationId = await ConversationService.createConversation(enterpriseId);
+                setConversationId(newConversationId);
+            } catch (error) {
+                console.error('Failed to create conversation:', error);
+                // You might want to show an error message to the user
+            }
+        };
+
+        initializeConversation();
+    }, [enterpriseId]);
+
+    // conversationId is created but not used in chatbot currently - reserved for future VAPI integration
+    void conversationId;
 
     // Update widget state when prop changes
     // useEffect(() => {

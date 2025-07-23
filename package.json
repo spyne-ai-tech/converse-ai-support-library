@@ -46,7 +46,6 @@
   },
   "dependencies": {
     "@vapi-ai/client-sdk-react": "^0.0.9",
-    "@emailjs/browser": "^4.4.1",
     "@vapi-ai/web": "^2.3.8"
   },
   "devDependencies": {

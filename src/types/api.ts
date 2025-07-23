@@ -35,4 +35,33 @@ export interface VapiError {
   message: string;
   status?: number;
   code?: string;
+}
+
+// New conversation API types
+export interface ConversationCreateRequest {
+  enterpriseId: string;
+  teamAgentMappingId: string;
+}
+
+export interface ConversationCreateResponse {
+  conversationId: string;
+}
+
+// Email API types
+export interface DealerEmailResponse {
+  dealerEmail: string;
+}
+
+export interface SendEmailRequest {
+  conversationId: string;
+  senderEmail: string;
+  receiverEmail: string;
+  subject: string;
+  body: string;
+  role: string;
+}
+
+export interface SendEmailResponse {
+  success: boolean;
+  message?: string;
 } 

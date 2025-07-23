@@ -1,53 +1,69 @@
-import emailjs from '@emailjs/browser';
 import type { EmailFormData } from '../types/Email';
-import { EMAIL_CONFIG } from './email-config';
+import type { DealerEmailResponse, SendEmailRequest, SendEmailResponse } from '../types/api';
+import { SPYNE_CONFIG } from './config';
 
 export class EmailService {
-  private static isInitialized = false;
+  private static readonly baseUrl = SPYNE_CONFIG.BASE_URL;
 
-  static initialize(): void {
-    if (!this.isInitialized) {
-      emailjs.init(EMAIL_CONFIG.PUBLIC_KEY);
-      this.isInitialized = true;
+  static async getDealerEmail(enterpriseId?: string): Promise<string> {
+    try {
+      const url = `${this.baseUrl}/conversation/dealer-conversation/get-dealer-email?enterpriseId=${enterpriseId || SPYNE_CONFIG.ENTERPRISE_ID}`;
+      
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data: DealerEmailResponse = await response.json();
+      console.log('Dealer email retrieved:', data);
+      
+      return data.dealerEmail;
+    } catch (error) {
+      console.error('Failed to get dealer email:', error);
+      throw new Error('Failed to retrieve dealer email');
     }
   }
 
-  static async sendEmail(formData: EmailFormData): Promise<void> {
-    this.initialize();
-
-    const templateParams: Record<string, unknown> = {
-      name: "Website Visitor",
-      email: formData.user_email,
-      message: formData.message,
-      to_email: EMAIL_CONFIG.DEFAULT_RECIPIENT,
-      customer_email: formData.user_email,
-      from_email: formData.user_email,
-      subject: `Contact from ${formData.user_email}`,
-      title: "New Contact Form Submission"
-    };
-
-    console.log('📧 Sending email with params:', templateParams);
-    console.log('🎯 Recipient should be:', templateParams.to_email);
-
+  static async sendEmail(formData: EmailFormData, conversationId: string): Promise<void> {
     try {
-      await emailjs.send(
-        EMAIL_CONFIG.SERVICE_ID,
-        EMAIL_CONFIG.TEMPLATE_ID,
-        templateParams
-      );
+      // First get the dealer email
+      const dealerEmail = await this.getDealerEmail();
       
-      console.log('Email sent successfully');
+      const requestBody: SendEmailRequest = {
+        conversationId: conversationId,
+        senderEmail: formData.user_email,
+        receiverEmail: dealerEmail,
+        subject: `Contact from ${formData.user_email}`,
+        body: formData.message,
+        role: 'dealer'
+      };
+
+      console.log('📧 Sending email with params:', requestBody);
+
+      const response = await fetch(`${this.baseUrl}/conversation/dealer-conversation/add-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data: SendEmailResponse = await response.json();
+      console.log('Email sent successfully:', data);
+      
     } catch (error) {
       console.error('Failed to send email:', error);
       throw new Error('Failed to send email. Please try again.');
     }
-  }
-
-  static openEmailClient(formData: EmailFormData): void {
-    const subject = encodeURIComponent("Contact - Project Wave Follow-up");
-    const body = encodeURIComponent(formData.message);
-    const mailtoLink = `mailto:${EMAIL_CONFIG.DEFAULT_RECIPIENT}?subject=${subject}&body=${body}`;
-    
-    window.open(mailtoLink);
   }
 } 
