@@ -6,6 +6,7 @@ export interface CallProps {
   assistantId?: string;
   enterpriseId: string;
   teamId?: string;
+  showClose?: boolean;
   config?: Record<string, unknown>;
   personName?: string;
   personRole?: string;
@@ -25,12 +26,14 @@ export interface CallProps {
   // Text className props
   personRoleTextClassName?: string;
   personNameTextClassName?: string;
+  onClose?: () => void;
 }
 
 export interface CallInterfaceProps {
   personName: string;
   personRole: string;
   personImage: string;
+  showClose?: boolean;
   className?: string;
   style?: React.CSSProperties;
   containerClassName?: string;
@@ -58,6 +61,7 @@ export interface CallInterfaceProps {
   speakerButtonClassName?: string;
   // Loading state
   isLoading?: boolean;
+  onClose?: () => void;
 }
 
 export interface StartCallProps {

@@ -17,6 +17,7 @@ const Call: React.FC<CallProps> = ({
   assistantId,
   enterpriseId,
   teamId,
+  showClose = false,
   config = {},
   personName = "",
   personRole = "",
@@ -32,6 +33,7 @@ const Call: React.FC<CallProps> = ({
   speakerButtonClassName = "",
   personRoleTextClassName = "",
   personNameTextClassName = "",
+  onClose,
 }) => {
   const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
   const [agentData, setAgentData] = useState<RuntimeAgentResponse | null>(null);
@@ -132,6 +134,7 @@ const Call: React.FC<CallProps> = ({
       personName={finalPersonName}
       personRole={finalPersonRole}
       personImage={finalPersonImage}
+      showClose={showClose}
       className={className}
       style={style}
       containerClassName={containerClassName}
@@ -146,6 +149,7 @@ const Call: React.FC<CallProps> = ({
       callDuration={callDuration}
       onStartCall={startCall}
       onEndCall={endCall}
+      onClose={onClose}
       onToggleMute={toggleMute}
       onToggleSpeaker={toggleSpeaker}
       formatTime={formatTime}

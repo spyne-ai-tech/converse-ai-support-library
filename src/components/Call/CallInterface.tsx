@@ -1,11 +1,13 @@
 import React from "react";
 import callBg from "../../assets/call_bg.png";
 import type { CallInterfaceProps } from "../../types/Call";
+import SVG from "../svg/SVG";
 
 const CallInterface: React.FC<CallInterfaceProps> = ({
   personName,
   personRole,
   personImage,
+  showClose = false,
   className = "",
   style = {},
   containerClassName = "",
@@ -20,6 +22,7 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
   callDuration = 0,
   onStartCall,
   onEndCall,
+  onClose,
   onToggleMute,
   onToggleSpeaker,
   personRoleTextClassName = "",
@@ -81,15 +84,12 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
           </div>
 
           {/* Close button - only show during call */}
-          {isInCall && onEndCall && (
+          {showClose && (
             <button
-              onClick={onEndCall}
-              disabled={isLoading}
-              className={`absolute top-5 right-5 bg-transparent border-none text-white text-2xl cursor-pointer z-[10000] w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors duration-200 ${
-                isLoading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              onClick={onClose}
+              className="absolute top-5 right-5 bg-transparent border-none text-white text-2xl cursor-pointer z-[10000] w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors duration-200"
             >
-              ✕
+              <SVG iconName="close" />
             </button>
           )}
 

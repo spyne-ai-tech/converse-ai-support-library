@@ -52,10 +52,10 @@ function App() {
         );
 
       case "chat":
-        return <Chatbot />;
+        return <Chatbot showClose={true} />;
 
       case "email":
-        return <Email />;
+        return <Email showClose={true} />;
 
       default:
         return (

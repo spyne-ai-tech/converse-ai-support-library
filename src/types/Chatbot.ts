@@ -9,7 +9,8 @@ export interface Message {
 
 export interface ChatbotProps {
   isOpen?: boolean;
-  onToggle?: (isOpen: boolean) => void;
+  showClose?: boolean;
+  onClose?: () => void;
 }
 
 export interface ChatInputProps {
