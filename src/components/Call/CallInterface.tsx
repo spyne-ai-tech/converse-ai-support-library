@@ -85,18 +85,9 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
           )}
 
           {/* Content */}
-          <div className="relative z-10 flex items-center justify-between h-full w-full">
-            {/* Left side - Person image */}
-            <div className="relative h-full w-[50%]">
-              <img
-                src={personImage}
-                alt={personName}
-                className="h-full object-contain absolute bottom-0 left-10"
-              />
-            </div>
-
-            {/* Right side - Content */}
-            <div className="text-center text-white flex-1 my-auto">
+          <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between h-full w-full">
+            {/* Content section - top on mobile, right on desktop */}
+            <div className="text-center text-white flex-1 my-auto order-1 sm:order-2 pt-8 sm:pt-0">
               {/* Person role */}
               <div
                 className={`text-sm font-medium tracking-widest text-white/90 mb-2 ${personRoleTextClassName}`}
@@ -140,11 +131,20 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
                 {isConnected && <AudioVisualization />}
               </div>
             </div>
+
+            {/* Person image - bottom on mobile, left on desktop */}
+            <div className="relative flex-1 sm:h-full sm:w-[50%] order-2 sm:order-1 flex justify-center sm:justify-start items-end pb-4 sm:pb-0">
+              <img
+                src={personImage}
+                alt={personName}
+                className="h-[40vh] sm:h-full object-contain absolute bottom-0 sm:left-10"
+              />
+            </div>
           </div>
         </div>
 
         {/* Bottom controls */}
-        <div className="p-8 flex items-center justify-center gap-6 z-10 h-[20%]">
+        <div className=" p-4 sm:p-8 flex items-center justify-center gap-4 sm:gap-6 z-10 h-[15%] sm:h-[20%]">
           {speakerIcon}
           {muteIcon}
           {isInCall ? (
@@ -157,7 +157,7 @@ const CallInterface: React.FC<CallInterfaceProps> = ({
           ) : (
             <button
               onClick={onStartCall}
-              className="bg-[#4600F2] hover:bg-[#3d00d1] whitespace-nowrap text-white font-semibold py-2 px-20 rounded-full transition-colors duration-200 text-md"
+              className="bg-[#4600F2] hover:bg-[#3d00d1] whitespace-nowrap text-white font-semibold py-2 px-10 sm:px-20 rounded-full transition-colors duration-200 text-md"
             >
               Call Now
             </button>
