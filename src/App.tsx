@@ -11,7 +11,6 @@ import {
 function App() {
   const [componentType, setComponentType] = useState<string | null>(null);
   const [enterpriseId, setEnterpriseId] = useState<string>("");
-  const [teamId, setTeamId] = useState<string>("");
 
   const vapiApiKey = import.meta.env.VITE_VAPI_API_KEY || "";
   const vapiBaseUrl = import.meta.env.VITE_API_BASE_URL || "";
@@ -21,11 +20,9 @@ function App() {
     const urlParams = new URLSearchParams(window.location.search);
     const type = urlParams.get("type");
     const enterprise = urlParams.get("enterpriseId");
-    const team = urlParams.get("teamId");
 
     setComponentType(type);
     setEnterpriseId(enterprise || "");
-    setTeamId(team || "");
   }, []);
 
   // Render based on type parameter
@@ -46,7 +43,6 @@ function App() {
             apiKey={vapiApiKey}
             baseUrl={vapiBaseUrl}
             enterpriseId={enterpriseId}
-            teamId={teamId}
             showClose={true}
           />
         );
@@ -56,7 +52,7 @@ function App() {
           <Chatbot
             showClose={true}
             enterpriseId={enterpriseId}
-            teamId={teamId}
+            baseUrl={vapiBaseUrl}
           />
         );
 
@@ -81,19 +77,19 @@ function App() {
             <div className="flex flex-col gap-2 text-sm text-gray-500">
               <p>
                 <code>
-                  ?type=call&enterpriseId={enterpriseId}&teamId={teamId}
+                  ?type=call&enterpriseId={enterpriseId}
                 </code>{" "}
                 - Shows Call component
               </p>
               <p>
                 <code>
-                  ?type=chat&enterpriseId={enterpriseId}&teamId={teamId}
+                  ?type=chat&enterpriseId={enterpriseId}
                 </code>{" "}
                 - Shows Chatbot component
               </p>
               <p>
                 <code>
-                  ?type=email&enterpriseId={enterpriseId}&teamId={teamId}
+                  ?type=email&enterpriseId={enterpriseId}
                 </code>{" "}
                 - Shows Email component
               </p>
@@ -103,17 +99,17 @@ function App() {
             <div className="flex gap-4 mt-8">
               <CallButton
                 onClick={() =>
-                  (window.location.href = `?type=call&enterpriseId=${enterpriseId}&teamId=${teamId}`)
+                  (window.location.href = `?type=call&enterpriseId=${enterpriseId}`)
                 }
               />
               <ChatButton
                 onClick={() =>
-                  (window.location.href = `?type=chat&enterpriseId=${enterpriseId}&teamId=${teamId}`)
+                  (window.location.href = `?type=chat&enterpriseId=${enterpriseId}`)
                 }
               />
               <EmailButton
                 onClick={() =>
-                  (window.location.href = `?type=email&enterpriseId=${enterpriseId}&teamId=${teamId}`)
+                  (window.location.href = `?type=email&enterpriseId=${enterpriseId}`)
                 }
               />
             </div>

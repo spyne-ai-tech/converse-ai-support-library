@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import type { EmailProps, EmailFormData } from "../../types/Email";
-import { EMAIL_CONFIG } from "../../lib/email-config";
 import EmailInterface from "./EmailInterface";
 import {
   createConversation,
+  fetchAgents,
   getDealerEmail,
   sendEmail,
 } from "../../helpers/api";
@@ -22,7 +22,7 @@ const Email: React.FC<EmailProps> = ({
 }) => {
   const [formData, setFormData] = useState<EmailFormData>({
     user_email: "",
-    message: EMAIL_CONFIG.DEFAULT_MESSAGE,
+    message: "",
     dealerEmail: "",
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -32,22 +32,31 @@ const Email: React.FC<EmailProps> = ({
   // Create conversation when component mounts
   useEffect(() => {
     const initializeConversation = async () => {
-      const conversation = await createConversation({
-        baseUrl,
-        enterpriseId,
-        teamAgentMappingId: "9cea0eba-c65a-4c8a-bd6c-1637385e55d1",
-      });
-      setConversationId(conversation);
-
-      const dealerEmail = await getDealerEmail({
+      const agentsList = await fetchAgents({
         enterpriseId,
         baseUrl,
       });
 
-      setFormData((prev) => ({
-        ...prev,
-        dealerEmail,
-      }));
+      if (agentsList.length > 0) {
+        // Select first agent
+        const firstAgent = agentsList[0];
+        const conversation = await createConversation({
+          baseUrl,
+          enterpriseId,
+          teamAgentMappingId: firstAgent.id,
+        });
+        setConversationId(conversation);
+
+        const dealerEmail = await getDealerEmail({
+          enterpriseId,
+          baseUrl,
+        });
+
+        setFormData((prev) => ({
+          ...prev,
+          dealerEmail,
+        }));
+      }
     };
 
     initializeConversation();
@@ -91,7 +100,7 @@ const Email: React.FC<EmailProps> = ({
     setEmailSent(false);
     setFormData({
       user_email: "",
-      message: EMAIL_CONFIG.DEFAULT_MESSAGE,
+      message: "",
       dealerEmail: formData.dealerEmail,
     });
   };

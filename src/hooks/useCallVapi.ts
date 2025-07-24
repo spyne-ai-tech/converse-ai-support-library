@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import Vapi from "@vapi-ai/web";
+import { sendCallReport } from "../helpers/api";
 
 interface UseCallVapiProps {
   apiKey: string;
   assistantId: string;
   config?: Record<string, unknown>;
+  baseUrl: string;
 }
 
 interface UseCallVapiReturn {
@@ -31,6 +33,7 @@ export const useCallVapi = ({
   apiKey,
   assistantId,
   config = {},
+  baseUrl,
 }: UseCallVapiProps): UseCallVapiReturn => {
   const [vapi, setVapi] = useState<Vapi | null>(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -39,6 +42,8 @@ export const useCallVapi = ({
   const [isMuted, setIsMuted] = useState(false);
   const [isSpeakerOn, setIsSpeakerOn] = useState(true);
   const [callDuration, setCallDuration] = useState(0);
+  const [callId, setCallId] = useState<string | null>(null);
+
   const [transcript, setTranscript] = useState<
     Array<{ role: string; text: string }>
   >([]);
@@ -113,21 +118,28 @@ export const useCallVapi = ({
   }, [isConnected]);
 
   // Call control functions
-  const startCall = () => {
+  const startCall = async () => {
     if (vapi) {
       setIsConnecting(true);
       if (config && Object.keys(config).length > 0) {
-        vapi.start(config);
+        const callData = await vapi.start(config);
+        setCallId(callData?.id || null);
       } else {
-        vapi.start(assistantId);
+        const callData = await vapi.start(assistantId);
+        setCallId(callData?.id || null);
       }
     }
   };
 
-  const endCall = () => {
+  const endCall = async () => {
     if (vapi) {
+      console.log(vapi);
       setIsConnecting(false);
       vapi.stop();
+      await sendCallReport({
+        baseUrl: baseUrl,
+        callId: callId || "",
+      });
     }
   };
 

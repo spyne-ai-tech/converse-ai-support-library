@@ -5,7 +5,6 @@ export interface CallProps {
   baseUrl: string;
   assistantId?: string;
   enterpriseId: string;
-  teamId?: string;
   showClose?: boolean;
   config?: Record<string, unknown>;
   personName?: string;

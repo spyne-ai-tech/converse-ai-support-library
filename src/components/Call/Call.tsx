@@ -16,7 +16,6 @@ const Call: React.FC<CallProps> = ({
   baseUrl,
   assistantId,
   enterpriseId,
-  teamId,
   showClose = false,
   config = {},
   personName = "",
@@ -65,6 +64,7 @@ const Call: React.FC<CallProps> = ({
     apiKey: finalApiKey,
     assistantId: finalAssistantId || "",
     config: finalConfig,
+    baseUrl,
   });
 
   useEffect(() => {
@@ -75,7 +75,6 @@ const Call: React.FC<CallProps> = ({
         // Fetch agents list
         const agentsList = await fetchAgents({
           enterpriseId,
-          teamId: teamId || "",
           baseUrl,
         });
 
@@ -87,7 +86,6 @@ const Call: React.FC<CallProps> = ({
           // Fetch runtime agent data
           const runtimeAgentData = await fetchAgentData({
             enterpriseId,
-            teamId: teamId || "",
             agentId: firstAgent.id,
             baseUrl,
           });

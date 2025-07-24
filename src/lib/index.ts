@@ -1,5 +1,5 @@
 import CallComponent from "../components/Call/Call";
-import ChatbotComponent from "../components/chatbot";
+import ChatbotComponent from "../components/Chat/chatbot";
 import EmailComponent from "../components/Email/email";
 import CallButtonComponent from "../components/Buttons/CallButton";
 import ChatButtonComponent from "../components/Buttons/ChatButton";

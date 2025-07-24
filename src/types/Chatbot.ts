@@ -10,9 +10,9 @@ export interface Message {
 export interface ChatbotProps {
   isOpen?: boolean;
   enterpriseId?: string;
-  teamId?: string;
   showClose?: boolean;
   onClose?: () => void;
+  baseUrl: string;
 }
 
 export interface ChatInputProps {

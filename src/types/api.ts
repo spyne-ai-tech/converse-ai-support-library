@@ -4,7 +4,7 @@ export interface VapiChatRequest {
   previousChatId?: string;
 }
 
-import { MessageRole } from './enums';
+import { MessageRole } from "./enums";
 
 export interface VapiMessage {
   role: MessageRole;
@@ -64,4 +64,4 @@ export interface SendEmailRequest {
 export interface SendEmailResponse {
   success: boolean;
   message?: string;
-} 
+}

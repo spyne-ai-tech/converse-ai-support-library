@@ -3,16 +3,14 @@ import type { EmailFormData } from "../types/Email";
 
 const fetchAgents = async ({
   enterpriseId = "0d0f8887e",
-  teamId = "51f00374d9",
   baseUrl,
 }: {
   enterpriseId: string;
-  teamId: string;
   baseUrl: string;
 }) => {
   try {
     const agentListResponse = await fetch(
-      `${baseUrl}/conversation/agents/fetch-agent-list?enterpriseId=${enterpriseId}&teamId=${teamId}`
+      `${baseUrl}/conversation/agents/fetch-agent-list?enterpriseId=${enterpriseId}`
     );
 
     return await agentListResponse.json();
@@ -23,18 +21,16 @@ const fetchAgents = async ({
 
 const fetchAgentData = async ({
   enterpriseId,
-  teamId,
   agentId,
   baseUrl,
 }: {
   enterpriseId: string;
-  teamId: string;
   agentId: string;
   baseUrl: string;
 }) => {
   try {
     const agentDataResponse = await fetch(
-      `${baseUrl}/conversation/agents/runtime-agent?enterpriseId=${enterpriseId}&teamId=${teamId}&agentId=${agentId}`
+      `${baseUrl}/conversation/agents/runtime-agent?enterpriseId=${enterpriseId}&agentId=${agentId}`
     );
 
     return await agentDataResponse.json();
@@ -154,10 +150,101 @@ async function getDealerEmail({
   }
 }
 
+async function sendCallReport({
+  baseUrl,
+  callId,
+}: {
+  baseUrl: string;
+  callId: string;
+}): Promise<any> {
+  try {
+    const requestBody: any = {
+      callId,
+    };
+
+    const response = await fetch(
+      `${baseUrl}/conversation/vapi/detailed-end-call-report`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json, text/plain, */*",
+        },
+        body: JSON.stringify(requestBody),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw new Error("Failed to send call report");
+  }
+}
+
+class ChatService {
+  static async createChat({
+    baseUrl,
+    input,
+    conversationId,
+  }: {
+    baseUrl: string;
+    input: string;
+    conversationId: string;
+  }): Promise<{ reply: string }> {
+    try {
+      const response = await fetch(`${baseUrl}/conversation/chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ input, conversationId }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      // Prefer 'output' property, fallback to 'reply' or 'response'
+      return { reply: data.output ?? data.reply ?? data.response ?? "" };
+    } catch (error) {
+      throw new Error("Failed to send chat message");
+    }
+  }
+
+  static async endChat({
+    baseUrl,
+    conversationId,
+  }: {
+    baseUrl: string;
+    conversationId: string;
+  }): Promise<void> {
+    try {
+      const response = await fetch(`${baseUrl}/conversation/chat/end`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ conversationId }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      // No response body expected
+      return;
+    } catch (error) {
+      throw new Error("Failed to end chat");
+    }
+  }
+}
+
 export {
   fetchAgents,
   fetchAgentData,
   sendEmail,
   createConversation,
   getDealerEmail,
+  sendCallReport,
+  ChatService,
 };
