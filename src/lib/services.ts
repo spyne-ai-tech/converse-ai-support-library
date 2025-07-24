@@ -5,19 +5,22 @@ import { VAPI_CONFIG, SPYNE_CONFIG } from './config';
 export class VapiChatService {
   private static readonly apiKey = VAPI_CONFIG.API_KEY;
 
-  static async sendMessage(message: string, previousChatId?: string): Promise<VapiChatResponse> {
+  static async sendMessage(
+    message: string,
+    previousChatId?: string
+  ): Promise<VapiChatResponse> {
     const requestBody: VapiChatRequest = {
       assistantId: VAPI_CONFIG.ASSISTANT_ID,
       input: message,
       ...(previousChatId && { previousChatId }),
     };
 
-    try {      
+    try {
       const response = await fetch(VapiEndpoints.CHAT, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
-          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.apiKey}`,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
       });
@@ -27,11 +30,11 @@ export class VapiChatService {
       }
 
       const data: VapiChatResponse = await response.json();
-      console.log('VAPI Response:', data);
-      
+      console.log("VAPI Response:", data);
+
       return data;
     } catch (error) {
-      console.error('VAPI Chat API Error:', error);
+      console.error("VAPI Chat API Error:", error);
       throw this.handleError(error);
     }
   }
@@ -42,13 +45,13 @@ export class VapiChatService {
     if (outputMessage?.content) {
       return outputMessage.content;
     }
-    
+
     const inputMessage: VapiMessage | undefined = response.input?.[0];
     if (inputMessage?.content) {
       return inputMessage.content;
     }
-    
-    return 'Sorry, I could not understand that.';
+
+    return "Sorry, I could not understand that.";
   }
 
   private static handleError(error: unknown): VapiError {
@@ -56,18 +59,17 @@ export class VapiChatService {
       return {
         message: error.message,
         status: 500,
-        code: 'VAPI_ERROR',
+        code: "VAPI_ERROR",
       };
     }
-    
+
     return {
-      message: 'An unknown error occurred',
+      message: "An unknown error occurred",
       status: 500,
-      code: 'UNKNOWN_ERROR',
+      code: "UNKNOWN_ERROR",
     };
   }
 }
-
 export class ConversationService {
   private static readonly baseUrl = SPYNE_CONFIG.BASE_URL;
 

@@ -129,6 +129,10 @@ const Call: React.FC<CallProps> = ({
     </button>
   );
 
+  if (!agentData) {
+    return null;
+  }
+
   return (
     <CallInterface
       personName={finalPersonName}

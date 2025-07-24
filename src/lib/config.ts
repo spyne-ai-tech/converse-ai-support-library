@@ -12,41 +12,41 @@ export const SPYNE_CONFIG = {
 } as const;
 
 export const CHAT_CONFIG = {
-  AUTO_SCROLL_BEHAVIOR: 'smooth' as ScrollBehavior,
-  DEFAULT_PLACEHOLDER: 'Type your chat message here!',
+  AUTO_SCROLL_BEHAVIOR: "smooth" as ScrollBehavior,
+  DEFAULT_PLACEHOLDER: "Type your chat message here!",
   TYPING_INDICATOR_DELAY: 100,
   TIME_FORMAT_OPTIONS: {
     hour12: false,
-    hour: '2-digit' as const,
-    minute: '2-digit' as const,
+    hour: "2-digit" as const,
+    minute: "2-digit" as const,
   },
   DATE_FORMAT_OPTIONS: {
-    weekday: 'long' as const,
-    year: 'numeric' as const,
-    month: 'long' as const,
-    day: 'numeric' as const,
+    weekday: "long" as const,
+    year: "numeric" as const,
+    month: "long" as const,
+    day: "numeric" as const,
   },
 } as const;
 
 export const QUICK_ACTIONS = [
   {
-    id: 'test-drive',
-    label: 'Book a Test Drive for me asap',
+    id: "test-drive",
+    label: "Book a Test Drive for me asap",
     primary: true,
   },
   {
-    id: 'book-drive',
-    label: 'Book Test Drive',
+    id: "book-drive",
+    label: "Book Test Drive",
     primary: false,
   },
   {
-    id: 'usp-features',
-    label: 'Tell me USP features',
+    id: "usp-features",
+    label: "Tell me USP features",
     primary: false,
   },
   {
-    id: 'finance',
-    label: 'Finance options',
+    id: "finance",
+    label: "Finance options",
     primary: false,
   },
-] as const; 
+] as const;

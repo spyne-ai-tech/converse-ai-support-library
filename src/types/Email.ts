@@ -1,13 +1,14 @@
 export interface EmailProps {
   isOpen?: boolean;
-  enterpriseId?: string;
-  teamId?: string;
+  enterpriseId: string;
+  baseUrl: string;
   showClose?: boolean;
   onClose?: () => void;
 }
 
 export interface EmailFormData {
   user_email: string;
+  dealerEmail: string;
   message: string;
 }
 
@@ -20,4 +21,4 @@ export interface EmailTemplateParams {
   from_email: string;
   subject: string;
   title: string;
-} 
+}

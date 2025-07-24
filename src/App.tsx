@@ -13,6 +13,9 @@ function App() {
   const [enterpriseId, setEnterpriseId] = useState<string>("");
   const [teamId, setTeamId] = useState<string>("");
 
+  const vapiApiKey = import.meta.env.VITE_VAPI_API_KEY || "";
+  const vapiBaseUrl = import.meta.env.VITE_API_BASE_URL || "";
+
   useEffect(() => {
     // Get query parameters from URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -28,7 +31,7 @@ function App() {
   // Render based on type parameter
   const renderComponent = () => {
     // Check if required parameters are present for any component type
-    if (componentType && (!enterpriseId || !teamId)) {
+    if (componentType && !enterpriseId) {
       return (
         <div className="h-[100vh] w-[100vw] flex items-center justify-center">
           <span>No data available</span>
@@ -40,16 +43,31 @@ function App() {
       case "call":
         return (
           <Call
+            apiKey={vapiApiKey}
+            baseUrl={vapiBaseUrl}
             enterpriseId={enterpriseId}
+            teamId={teamId}
             showClose={true}
           />
         );
 
       case "chat":
-        return <Chatbot showClose={true} enterpriseId={enterpriseId} teamId={teamId} />;
+        return (
+          <Chatbot
+            showClose={true}
+            enterpriseId={enterpriseId}
+            teamId={teamId}
+          />
+        );
 
       case "email":
-        return <Email showClose={true} enterpriseId={enterpriseId} teamId={teamId} />;
+        return (
+          <Email
+            showClose={true}
+            enterpriseId={enterpriseId}
+            baseUrl={vapiBaseUrl}
+          />
+        );
 
       default:
         return (
