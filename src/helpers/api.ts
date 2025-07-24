@@ -1,8 +1,4 @@
-import type {
-  ConversationCreateRequest,
-  SendEmailRequest,
-  SendEmailResponse,
-} from "../types/api";
+import type { ConversationCreateRequest, SendEmailRequest } from "../types/api";
 import type { EmailFormData } from "../types/Email";
 
 const fetchAgents = async ({
